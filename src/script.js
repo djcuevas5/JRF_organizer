@@ -1,36 +1,28 @@
-// Load saved data from localStorage
-function loadOrders() {
-    const saved = localStorage.getItem('printHoldOrders');
-    if (saved) {
-        try {
-            orders = JSON.parse(saved);
-            nextId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
-            return true;
-        } catch (e) {
-            return false;
-        }
-    }
-    return false;
-}
-
-function addOrder() {
-    // ... existing code ...
-    orders.push(newOrder);
-    saveOrders();  // <-- ADD THIS
-    renderAll();
-    // ...
-}
-// Save data to localStorage
-function saveOrders() {
-    localStorage.setItem('printHoldOrders', JSON.stringify(orders));
-}
-
 (function() {
     'use strict';
 
     // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
+
+    // ---------- PERSISTENCE (now inside the IIFE) ----------
+    function loadOrders() {
+        const saved = localStorage.getItem('printHoldOrders');
+        if (saved) {
+            try {
+                orders = JSON.parse(saved);
+                nextId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    function saveOrders() {
+        localStorage.setItem('printHoldOrders', JSON.stringify(orders));
+    }
 
     // DOM refs
     const container = document.getElementById('cardContainer');
@@ -171,14 +163,14 @@ function saveOrders() {
         const inputs = card.querySelectorAll('input, select');
         inputs.forEach(input => {
             input.addEventListener('input', function() {
-                // Update data but DON'T re-render fully to keep focus
                 updateOrderData(index);
-                // Just update the card status (green/yellow) and complete button
                 updateCardStatus(index);
+                saveOrders(); // Save on every input change
             });
             input.addEventListener('change', function() {
                 updateOrderData(index);
                 updateCardStatus(index);
+                saveOrders(); // Save on change as well
             });
         });
 
@@ -243,11 +235,9 @@ function saveOrders() {
         const status = getCardStatus(order);
         const isCompleteEnabled = status === 'green';
 
-        // Update card classes
         card.classList.remove('green', 'yellow');
         card.classList.add(status);
 
-        // Update complete button
         const completeBtn = card.querySelector('.complete-btn');
         if (completeBtn) {
             completeBtn.disabled = !isCompleteEnabled;
@@ -263,8 +253,8 @@ function saveOrders() {
             designerEmail: '',
             jobId: '',
             catNum: '',
-            type: 'New',
-            productLine: 'Line A',
+            type: 'Change/Approval',   // updated default
+            productLine: 'RS Vista',   // updated default
             designerComment: '',
             lpnNum: '',
             evault: false,
@@ -275,13 +265,12 @@ function saveOrders() {
             inProcessText: ''
         };
         orders.push(newOrder);
+        saveOrders();          // <-- SAVE
         renderAll();
-        // Scroll to the new card
         setTimeout(() => {
             const cards = container.querySelectorAll('.card');
             if (cards.length > 0) {
                 cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Focus on the first required field
                 const firstInput = cards[cards.length - 1].querySelector('.job-id');
                 if (firstInput) setTimeout(() => firstInput.focus(), 300);
             }
@@ -291,6 +280,7 @@ function saveOrders() {
     function deleteOrder(id) {
         if (!confirm('Remove this order from the hold queue?')) return;
         orders = orders.filter(o => o.id !== id);
+        saveOrders();          // <-- SAVE
         renderAll();
     }
 
@@ -298,6 +288,11 @@ function saveOrders() {
     addBtn.addEventListener('click', addOrder);
     floatingAddBtn.addEventListener('click', addOrder);
 
-    // ---------- initial render ----------
+    // ---------- INIT ----------
+    // Load saved data, or start fresh
+    if (!loadOrders()) {
+        orders = [];
+    }
     renderAll();
+
 })();
