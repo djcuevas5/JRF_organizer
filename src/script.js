@@ -17,17 +17,17 @@
         return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
-        function getCardStatus(order) {
+    function getCardStatus(order) {
         const missing = (order.missingText || '').trim();
         const inProcess = (order.inProcessText || '').trim();
-        // Green if BOTH are empty, yellow if either is filled
         if (missing === '' && inProcess === '') {
             return 'green';
         } else {
             return 'yellow';
         }
     }
- // ---------- render ----------
+
+    // ---------- render ----------
     function renderAll() {
         if (!container) return;
 
@@ -49,26 +49,26 @@
             html += `
                 <div class="card ${status}" data-index="${index}">
                     <div class="card-header">
-                        <span class="product-line-name">${escapeHtml(order.productLineName || '')}</span>
+                        <input type="text" class="product-line-name" value="${escapeHtml(order.productLineName || '')}" placeholder="Enter product line name" />
                         <div class="emails">
-                            <span>📧 PS: ${escapeHtml(order.specialistEmail || '—')}</span>
-                            <span>📧 DE: ${escapeHtml(order.designerEmail || '—')}</span>
+                            <span>📧 PS: <input type="email" class="specialist-email" value="${escapeHtml(order.specialistEmail || '')}" placeholder="specialist@email.com" /></span>
+                            <span>📧 DE: <input type="email" class="designer-email" value="${escapeHtml(order.designerEmail || '')}" placeholder="designer@email.com" /></span>
                         </div>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
                             <div class="field-group">
-                                <label>Job ID</label>
-                                <input type="text" class="job-id" value="${escapeHtml(order.jobId || '')}" />
+                                <label>Job ID <span class="required">*</span></label>
+                                <input type="text" class="job-id" value="${escapeHtml(order.jobId || '')}" placeholder="e.g. JOB-1234" required />
                             </div>
                             <div class="field-group">
-                                <label>Cat #</label>
-                                <input type="text" class="cat-num" value="${escapeHtml(order.catNum || '')}" />
+                                <label>Cat # <span class="required">*</span></label>
+                                <input type="text" class="cat-num" value="${escapeHtml(order.catNum || '')}" placeholder="e.g. CAT-1001" required />
                             </div>
                             <div class="field-group">
-                                <label>Type</label>
-                                <select class="type-dropdown">
+                                <label>Type <span class="required">*</span></label>
+                                <select class="type-dropdown" required>
                                     <option value="New" ${order.type === 'New' ? 'selected' : ''}>New</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
                                     <option value="Rush" ${order.type === 'Rush' ? 'selected' : ''}>Rush</option>
@@ -89,14 +89,14 @@
                         <div class="row">
                             <div class="field-group full-width">
                                 <label>Designer Comment</label>
-                                <input type="text" class="designer-comment" value="${escapeHtml(order.designerComment || '')}" />
+                                <input type="text" class="designer-comment" value="${escapeHtml(order.designerComment || '')}" placeholder="Add designer notes here..." />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="field-group">
                                 <label>LPN #</label>
-                                <input type="text" class="lpn-num" value="${escapeHtml(order.lpnNum || '')}" />
+                                <input type="text" class="lpn-num" value="${escapeHtml(order.lpnNum || '')}" placeholder="e.g. LPN-1234" />
                             </div>
                             <div class="field-group checkbox-group">
                                 <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
@@ -136,16 +136,21 @@
             attachCardEvents(card, index);
         });
     }
-// ---------- attach events to a single card ----------
+
+    // ---------- attach events to a single card ----------
     function attachCardEvents(card, index) {
-        // All inputs and selects trigger update
+        // Get all inputs and selects
         const inputs = card.querySelectorAll('input, select');
         inputs.forEach(input => {
             input.addEventListener('input', function() {
-                updateOrderFromCard(index);
+                // Update data but DON'T re-render fully to keep focus
+                updateOrderData(index);
+                // Just update the card status (green/yellow) and complete button
+                updateCardStatus(index);
             });
             input.addEventListener('change', function() {
-                updateOrderFromCard(index);
+                updateOrderData(index);
+                updateCardStatus(index);
             });
         });
 
@@ -164,7 +169,9 @@
             completeBtn.addEventListener('click', function() {
                 if (!this.disabled) {
                     const order = orders[index];
-                    if (confirm(`Complete order "${order.productLineName || 'Untitled'}" (${order.jobId || 'No Job ID'})?`)) {
+                    const name = order.productLineName || 'Untitled';
+                    const job = order.jobId || 'No Job ID';
+                    if (confirm(`Complete order "${name}" (${job})?`)) {
                         deleteOrder(order.id);
                     }
                 }
@@ -172,34 +179,17 @@
         }
     }
 
-    // ---------- update order data from card DOM ----------
-    function updateOrderFromCard(index) {
+    // ---------- update order data (without re-render) ----------
+    function updateOrderData(index) {
         const card = container.querySelector(`.card[data-index="${index}"]`);
         if (!card) return;
 
         const order = orders[index];
         if (!order) return;
 
-        // Read all fields from the card
-        // Product line name is the text content of .product-line-name (editable via contenteditable, but we keep it simple)
-        // Actually — we need to make product-line-name editable. Let's use the input approach.
-        // But wait — the product line name is a span. We should make it an input for consistency.
-        // We'll use the value from a hidden input or just keep it as a span that updates via the product line dropdown.
-        // Actually — the user wanted "Product line name" as a big text field. Let's make it an input.
-        // Let me fix this in the render — I'll change .product-line-name to an input.
-        // BUT I realize I used a span. The user said "make it bigger" — they didn't specify editable,
-        // but since other fields are editable, I'll make it editable too.
-
-        // I'll update the render to use an input for product line name.
-        // For now, let's read it from the span.
-        const nameSpan = card.querySelector('.product-line-name');
-        if (nameSpan) {
-            // If it's a span, we need to get its text content
-            // But we should make it an input in the render.
-            // Let me quickly update the render to use an input.
-        }
-
-        // For now, we'll update these fields:
+        order.productLineName = card.querySelector('.product-line-name')?.value || '';
+        order.specialistEmail = card.querySelector('.specialist-email')?.value || '';
+        order.designerEmail = card.querySelector('.designer-email')?.value || '';
         order.jobId = card.querySelector('.job-id')?.value || '';
         order.catNum = card.querySelector('.cat-num')?.value || '';
         order.type = card.querySelector('.type-dropdown')?.value || '';
@@ -212,15 +202,28 @@
         order.qaChecklist = card.querySelector('.qa')?.checked || false;
         order.missingText = card.querySelector('.missing-text')?.value || '';
         order.inProcessText = card.querySelector('.in-process-text')?.value || '';
+    }
 
-        // Also update product line name from the input
-        const nameInput = card.querySelector('.product-line-name-input');
-        if (nameInput) {
-            order.productLineName = nameInput.value || '';
+    // ---------- update just the card status (no full re-render) ----------
+    function updateCardStatus(index) {
+        const card = container.querySelector(`.card[data-index="${index}"]`);
+        if (!card) return;
+
+        const order = orders[index];
+        if (!order) return;
+
+        const status = getCardStatus(order);
+        const isCompleteEnabled = status === 'green';
+
+        // Update card classes
+        card.classList.remove('green', 'yellow');
+        card.classList.add(status);
+
+        // Update complete button
+        const completeBtn = card.querySelector('.complete-btn');
+        if (completeBtn) {
+            completeBtn.disabled = !isCompleteEnabled;
         }
-
-        // Re-render to update status (green/yellow) and complete button
-        renderAll();
     }
 
     // ---------- CRUD ----------
@@ -250,6 +253,9 @@
             const cards = container.querySelectorAll('.card');
             if (cards.length > 0) {
                 cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Focus on the first required field
+                const firstInput = cards[cards.length - 1].querySelector('.job-id');
+                if (firstInput) setTimeout(() => firstInput.focus(), 300);
             }
         }, 100);
     }
