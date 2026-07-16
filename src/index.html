@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content=" width=device-width, intial-scale=1.0" />
-    <title> Sales Order/ Print Room Que </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sales Order / Print Room Que</title>
     <link rel="stylesheet" href="style.css" /> 
-  </head>
-  <body>
-      <div class="app">
-      <header class="app-headher">
-        <h1> Print Room - Hold Queue</h1>
-        <button class="btn btn-primary" id=addOrderBtn"> + Add Order </button>
-      </header>
-        <div id="cardContainer" class="card-containter"> </div>
-        
-        <button class="fab" id="floatingAddBtn" aria-label="Add new order">+ </button>
+</head>
+<body>
+    <div class="app">
+        <header class="app-header">
+            <h1>📦 Print Room · Hold Queue</h1>
+            <button class="btn btn-primary" id="addOrderBtn">＋ Add Order</button>
+        </header>
+
+        <div id="cardContainer" class="card-container">
+            <!-- Cards will be rendered here by JavaScript -->
         </div>
-        <script src="script.js"></script>
-  </body>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="floatingAddBtn" aria-label="Add new order">＋</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
