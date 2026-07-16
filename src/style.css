@@ -70,7 +70,7 @@ body {
 
 /* ----- card container (grid) ----- */
 .card-container {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
     gap: 1.8rem;
     align-items: start;
