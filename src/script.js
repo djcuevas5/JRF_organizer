@@ -69,7 +69,7 @@
                             <div class="field-group">
                                 <label>Type <span class="required">*</span></label>
                                 <select class="type-dropdown" required>
-                                    <option value="New" ${order.type === 'New' ? 'selected' : ''}>New</option>
+                                    <option value="New" ${order.type === 'Change/Approval' ? 'selected' : ''}>Change/Approval</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
                                     <option value="Rush" ${order.type === 'Rush' ? 'selected' : ''}>Rush</option>
                                     <option value="Cancellation" ${order.type === 'Cancellation' ? 'selected' : ''}>Cancellation</option>
