@@ -69,19 +69,20 @@
                             <div class="field-group">
                                 <label>Type <span class="required">*</span></label>
                                 <select class="type-dropdown" required>
-                                    <option value="New" ${order.type === 'Change/Approval' ? 'selected' : ''}>Change/Approval</option>
+                                    <option value="Change/Approval" ${order.type === 'Change/Approval' ? 'selected' : ''}>Change/Approval</option>
+                                    <option value="Change/Keep_p" ${order.type === 'Change/Keep_p' ? 'selected' : ''}>Change/Keep_p</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
-                                    <option value="Rush" ${order.type === 'Rush' ? 'selected' : ''}>Rush</option>
+                                    <option value="Production" ${order.type === 'Production' ? 'selected' : ''}>Production</option>
                                     <option value="Cancellation" ${order.type === 'Cancellation' ? 'selected' : ''}>Cancellation</option>
                                 </select>
                             </div>
                             <div class="field-group">
                                 <label>Product Line</label>
                                 <select class="product-line-dropdown">
-                                    <option value="Line A" ${order.productLine === 'Line A' ? 'selected' : ''}>Line A</option>
-                                    <option value="Line B" ${order.productLine === 'Line B' ? 'selected' : ''}>Line B</option>
-                                    <option value="Line C" ${order.productLine === 'Line C' ? 'selected' : ''}>Line C</option>
-                                    <option value="Line D" ${order.productLine === 'Line D' ? 'selected' : ''}>Line D</option>
+                                    <option value="RS Vista" ${order.productLine === 'RS Vista' ? 'selected' : ''}>RS Vista</option>
+                                    <option value="Vista Manual" ${order.productLine === 'Vista Manual' ? 'selected' : ''}>Vista Manual</option>
+                                    <option value="ST Vista" ${order.productLine === 'ST Vista' ? 'selected' : ''}>ST Vista</option>
+                                    <option value="RS PME" ${order.productLine === 'RS PME' ? 'selected' : ''}>RS PME</option>
                                 </select>
                             </div>
                         </div>
