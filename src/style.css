@@ -43,5 +43,25 @@ body{
   border: 1px solid #e2e8f0;
 }
   
-  
+  .btn-primary {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: white;
+    box-shadow: 0 6px 16px rgba(37, 99,235,025);
+  }
+
+  .btn-primary:hover{
+    bacgkround: #1a4fca;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(37, 99,235,0.3);
+  }
+
+  /* individual card */ 
+  .card {
+    background: white;
+    border-radius: 28px;
+    PADDING: 1.6rem 1.8rem 1.8rem 1.8rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    border: 1px solid #eef2f;
+  }
   
