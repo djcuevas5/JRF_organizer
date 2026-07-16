@@ -13,6 +13,13 @@ function loadOrders() {
     return false;
 }
 
+function addOrder() {
+    // ... existing code ...
+    orders.push(newOrder);
+    saveOrders();  // <-- ADD THIS
+    renderAll();
+    // ...
+}
 // Save data to localStorage
 function saveOrders() {
     localStorage.setItem('printHoldOrders', JSON.stringify(orders));
