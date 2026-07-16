@@ -1,3 +1,23 @@
+// Load saved data from localStorage
+function loadOrders() {
+    const saved = localStorage.getItem('printHoldOrders');
+    if (saved) {
+        try {
+            orders = JSON.parse(saved);
+            nextId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+    return false;
+}
+
+// Save data to localStorage
+function saveOrders() {
+    localStorage.setItem('printHoldOrders', JSON.stringify(orders));
+}
+
 (function() {
     'use strict';
 
