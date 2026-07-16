@@ -73,7 +73,7 @@
                                     <option value="Change/Keep_p" ${order.type === 'Change/Keep_p' ? 'selected' : ''}>Change/Keep_p</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
                                     <option value="Production" ${order.type === 'Production' ? 'selected' : ''}>Production</option>
-                                    <option value="Cancellation" ${order.type === 'Cancellation' ? 'selected' : ''}>Cancellation</option>
+                                    <option value="Approval" ${order.type === 'Approval' ? 'selected' : ''}>Approval</option>
                                 </select>
                             </div>
                             <div class="field-group">
