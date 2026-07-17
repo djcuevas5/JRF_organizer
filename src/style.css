@@ -428,6 +428,10 @@ body {
 .complete-group {
     flex: 0 1 auto;
     justify-content: flex-end;
+    display:flex;
+    flex-direction:column;
+    align-items: flex-end;
+    gap:0.4rem;
 }
 
 .complete-btn {
@@ -469,18 +473,18 @@ body {
     margin-top: 0.25rem;
 }
 
-/* ----- REMOVE BUTTON — same size as Complete, red, below it ----- */
+/* ----- REMOVE BUTTON — WIDER but SHORTER than Complete, RED, below it ----- */
 .remove-btn {
     background: #ef4444;
     border: none;
-    padding: 0.45rem 1.6rem;
+    padding: 0.25rem 2.5rem;
     border-radius: 60px;
-    font-weight: 600;
+    font-weight: 500;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+    box-shadow: 0 3px 8px rgba(239, 68, 68, 0.2);
     white-space: nowrap;
     margin-top: 0.2rem;
     text-align: center;
@@ -488,14 +492,14 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 38px;
-    gap: 0.4rem;
+    height: 30px;
+    gap: 0.3rem;
 }
 
 .remove-btn:hover {
     background: #dc2626;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.3);
 }
 
 /* ----- empty state ----- */
