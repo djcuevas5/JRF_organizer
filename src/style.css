@@ -516,32 +516,37 @@ body {
     color: #ffffff;
 }
 
-/* ----- Floating Action Button ----- */
-.fab {
-    position: fixed;
-    bottom: 2rem;          /* slightly higher */
-    right: 2rem;           /* slightly left */
-    width: 50px;           /* smaller (was 60px) */
-    height: 50px;          /* smaller (was 60px) */
-    border-radius: 50%;
-    background: #2563eb;
-    color: white;
-    border: none;
-    font-size: 2rem;       /* smaller plus sign (was 2.6rem) */
-    font-weight: 300;
-    box-shadow: 0 8px 28px rgba(37, 99, 235, 0.5);
+/* ----- BOTTOM ADD ORDER BUTTON (full width, like a card) ----- */
+.add-order-wrapper {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.btn-add-order {
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 28px;
+    border: 2px dashed rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    z-index: 999;
+    backdrop-filter: blur(4px);
+    text-align: center;
+    font-family: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.6rem;
 }
 
-.fab:hover {
-    transform: scale(1.08);
-    background: #1a4fc4;
-    box-shadow: 0 12px 36px rgba(37, 99, 235, 0.6);
+.btn-add-order:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
 }
 
 /* ----- MODAL (Guide) ----- */
@@ -661,14 +666,6 @@ body {
         flex: 1 1 auto;
         min-width: 100px;
         justify-content: center;
-    }
-
-    .fab {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 52px;
-        height: 52px;
-        font-size: 2.2rem;
     }
 
     .row.two-col {
