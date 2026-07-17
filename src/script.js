@@ -131,7 +131,7 @@
                             <div class="field-group checkbox-wrap">
                                 <div class="checkbox-label">Checklist</div>
                                 <div class="checkbox-group-vertical">
-                                    <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
+                                    <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> Drawings in eVault</label>
                                     <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
