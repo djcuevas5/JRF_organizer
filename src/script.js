@@ -136,7 +136,7 @@
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
                                     <label><input type="checkbox" class="artwork" ${order.artworkApproved ? 'checked' : ''} /> Artwork Approved</label>
-                                    <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in eVault / sp_hold</label>
+                                    <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in sp_hold</label>
                                 </div>
                             </div>
 
