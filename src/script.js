@@ -53,25 +53,15 @@
             return orders;
         }
         
-        if (currentFilter === 'Vistas') {
+        if (currentFilter === 'Vista') {
             // Show ALL orders that contain "Vista" in the product line
             return orders.filter(order => 
                 order.productLine && order.productLine.toLowerCase().includes('vista')
             );
         }
         
-        if (currentFilter === 'Vista Manual') {
-            // EXACT match only — NO RS Vista, NO ST Vista
-            return orders.filter(order => order.productLine === 'Vista Manual');
-        }
-        
-        if (currentFilter === 'ST Vista') {
-            // EXACT match only — NO RS Vista, NO Vista Manual
-            return orders.filter(order => order.productLine === 'ST Vista');
-        }
-        
         if (currentFilter === 'PME') {
-            // EXACT match only — ONLY RS PME
+            // Show ONLY "RS PME" — exact match
             return orders.filter(order => order.productLine === 'RS PME');
         }
         
@@ -332,10 +322,6 @@
         };
         orders.push(newOrder);
         saveOrders();
-        
-        // 🔥 FIX: Keep current filter — DO NOT reset to "All"
-        // The new order will show if it matches the current filter
-        
         renderAll();
         setTimeout(() => {
             const cards = container.querySelectorAll('.card');
