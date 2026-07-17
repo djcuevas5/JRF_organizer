@@ -513,5 +513,100 @@ body {
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
+/* ----- TWO-COLUMN ROW (Checkboxes + Date) ----- */
+.row.two-col {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+    width: 100%;
+}
 
+.row.two-col .checkbox-wrap {
+    flex: 1 1 280px;
+    min-width: 200px;
+}
+
+.row.two-col .date-wrap {
+    flex: 0 1 220px;
+    min-width: 180px;
+}
+
+/* ----- CHECKBOX WRAP (Left column) ----- */
+.checkbox-wrap {
+    background: rgba(248, 250, 252, 0.7);
+    padding: 0.6rem 1.2rem 0.8rem 1.2rem;
+    border-radius: 30px;
+    border: 1px solid rgba(237, 242, 248, 0.7);
+}
+
+.checkbox-wrap .checkbox-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 0.4rem;
+}
+
+.checkbox-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
+}
+
+.checkbox-group-vertical label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.9rem;
+    color: #1e293b;
+    cursor: pointer;
+    padding: 0.1rem 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.checkbox-group-vertical input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+/* ----- DATE WRAP (Right column) ----- */
+.date-wrap label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 0.2rem;
+    display: block;
+}
+
+.date-wrap input[type="date"] {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #dce3ef;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    background: white;
+    width: 100%;
+    font-family: inherit;
+    min-height: 38px;
+}
+
+.date-wrap input[type="date"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
 }
