@@ -60,7 +60,7 @@
     if (currentFilter === 'PME') {
         // Show BOTH RS PME and PME Manual
         return orders.filter(order =>
-            order.productLine === 'RS PME' || order.productLine === 'PME Manual'
+            order.productLine === 'RS PME' || order.productLine === 'PME Manual' || order.productLine === 'ST PME'
         );
     }
     return orders;
