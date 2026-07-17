@@ -5,7 +5,7 @@
     let orders = [];
     let nextId = 1;
 
-    // ---------- PERSISTENCE (now inside the IIFE) ----------
+    // ---------- PERSISTENCE ----------
     function loadOrders() {
         const saved = localStorage.getItem('printHoldOrders');
         if (saved) {
@@ -67,6 +67,7 @@
 
             html += `
                 <div class="card ${status}" data-index="${index}">
+                    <!-- CARD HEADER -->
                     <div class="card-header">
                         <input type="text" class="product-line-name" value="${escapeHtml(order.productLineName || '')}" placeholder="Enter product line name" />
                         <div class="emails">
@@ -75,7 +76,9 @@
                         </div>
                     </div>
 
+                    <!-- CARD BODY -->
                     <div class="card-body">
+                        <!-- ROW 1: Job ID, Cat #, Type, Product Line -->
                         <div class="row">
                             <div class="field-group">
                                 <label>Job ID <span class="required">*</span></label>
@@ -106,6 +109,7 @@
                             </div>
                         </div>
 
+                        <!-- ROW 2: Designer Comment -->
                         <div class="row">
                             <div class="field-group full-width">
                                 <label>Designer Comment</label>
@@ -113,16 +117,19 @@
                             </div>
                         </div>
 
+                        <!-- ROW 3: LPN # (single field) -->
                         <div class="row">
                             <div class="field-group">
                                 <label>LPN #</label>
                                 <input type="text" class="lpn-num" value="${escapeHtml(order.lpnNum || '')}" placeholder="e.g. LPN-1234" />
                             </div>
-                           
-                            <div class="row two-col">
-                            <!-- LEFT WRAP: Checkboxes (vertical) -->
+                        </div>
+
+                        <!-- ROW 4: TWO-COLUMN - Checkboxes (left) + Committed Date (right) -->
+                        <div class="row two-col">
+                            <!-- LEFT: Checkboxes -->
                             <div class="field-group checkbox-wrap">
-                                <label>Checklist</label>
+                                <div class="checkbox-label">Checklist</div>
                                 <div class="checkbox-group-vertical">
                                     <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
                                     <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
@@ -130,13 +137,15 @@
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
                                 </div>
                             </div>
-                        
-                        <!--RIGHT WRAP:: Committed date -->
-                        <div class="field-group date-wrap">
-                            <label>Committed Date</label>
-                            <input type="date" class="committed-date" value="${order.committedDate || ''}" />
+
+                            <!-- RIGHT: Committed Date -->
+                            <div class="field-group date-wrap">
+                                <label>Committed Date</label>
+                                <input type="date" class="committed-date" value="${escapeHtml(order.committedDate || '')}" />
+                            </div>
                         </div>
 
+                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
@@ -151,6 +160,7 @@
                             </div>
                         </div>
 
+                        <!-- CARD ACTIONS (Delete) -->
                         <div class="card-actions">
                             <button class="delete-card-btn" data-id="${order.id}" title="Remove order">🗑️</button>
                         </div>
@@ -176,12 +186,12 @@
             input.addEventListener('input', function() {
                 updateOrderData(index);
                 updateCardStatus(index);
-                saveOrders(); // Save on every input change
+                saveOrders();
             });
             input.addEventListener('change', function() {
                 updateOrderData(index);
                 updateCardStatus(index);
-                saveOrders(); // Save on change as well
+                saveOrders();
             });
         });
 
@@ -210,7 +220,7 @@
         }
     }
 
-    // ---------- update order data (without re-render) ----------
+    // ---------- update order data ----------
     function updateOrderData(index) {
         const card = container.querySelector(`.card[data-index="${index}"]`);
         if (!card) return;
@@ -233,10 +243,10 @@
         order.qaChecklist = card.querySelector('.qa')?.checked || false;
         order.missingText = card.querySelector('.missing-text')?.value || '';
         order.inProcessText = card.querySelector('.in-process-text')?.value || '';
-        order.committedDate = card.querySelector('.committed-date')?.value || '';
+        order.committedDate = card.querySelector('.committed-date')?.value || '';  // <-- ADD THIS
     }
 
-    // ---------- update just the card status (no full re-render) ----------
+    // ---------- update card status ----------
     function updateCardStatus(index) {
         const card = container.querySelector(`.card[data-index="${index}"]`);
         if (!card) return;
@@ -265,8 +275,8 @@
             designerEmail: '',
             jobId: '',
             catNum: '',
-            type: 'Change/Approval',   // updated default
-            productLine: 'RS Vista',   // updated default
+            type: 'Change/Approval',
+            productLine: 'RS Vista',
             designerComment: '',
             lpnNum: '',
             evault: false,
@@ -275,10 +285,10 @@
             qaChecklist: false,
             missingText: '',
             inProcessText: '',
-            committedDate: ''
+            committedDate: ''    // <-- ADD THIS
         };
         orders.push(newOrder);
-        saveOrders();          // <-- SAVE
+        saveOrders();
         renderAll();
         setTimeout(() => {
             const cards = container.querySelectorAll('.card');
@@ -293,7 +303,7 @@
     function deleteOrder(id) {
         if (!confirm('Remove this order from the hold queue?')) return;
         orders = orders.filter(o => o.id !== id);
-        saveOrders();          // <-- SAVE
+        saveOrders();
         renderAll();
     }
 
@@ -302,7 +312,6 @@
     floatingAddBtn.addEventListener('click', addOrder);
 
     // ---------- INIT ----------
-    // Load saved data, or start fresh
     if (!loadOrders()) {
         orders = [];
     }
