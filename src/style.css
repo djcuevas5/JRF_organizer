@@ -519,15 +519,15 @@ body {
 /* ----- Floating Action Button ----- */
 .fab {
     position: fixed;
-    bottom: 2.5rem;
-    right: 2.5rem;
-    width: 60px;
-    height: 60px;
+    bottom: 2rem;          /* slightly higher */
+    right: 2rem;           /* slightly left */
+    width: 50px;           /* smaller (was 60px) */
+    height: 50px;          /* smaller (was 60px) */
     border-radius: 50%;
     background: #2563eb;
     color: white;
     border: none;
-    font-size: 2.6rem;
+    font-size: 2rem;       /* smaller plus sign (was 2.6rem) */
     font-weight: 300;
     box-shadow: 0 8px 28px rgba(37, 99, 235, 0.5);
     cursor: pointer;
