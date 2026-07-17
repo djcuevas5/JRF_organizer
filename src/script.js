@@ -49,31 +49,31 @@
 
     // ---------- FILTER LOGIC ----------
     function getFilteredOrders() {
-        if (currentFilter === 'all') {
-            return orders;
-        }
-        if (currentFilter === 'Vista') {
-            return orders.filter(order =>
-                order.productLine && order.productLine.toLowerCase().includes('vista')
-            );
-        }
-        if (currentFilter === 'PME') {
-            return orders.filter(order => order.productLine === 'RS PME');
-            return orders.filter(order =>
-                order.productLine === 'PME Manual' || order.productLine === 'ST PME'
-            )
-        }
+    if (currentFilter === 'all') {
         return orders;
     }
-
-    function getDefaultProductLine() {
-        if (currentFilter === 'Vista') {
-            return 'RS Vista';
-        } else if (currentFilter === 'PME') {
-            return 'RS PME';
-        }
-        return 'RS Vista';
+    if (currentFilter === 'Vista') {
+        return orders.filter(order =>
+            order.productLine && order.productLine.toLowerCase().includes('vista')
+        );
     }
+    if (currentFilter === 'PME') {
+        // Show BOTH RS PME and PME Manual
+        return orders.filter(order =>
+            order.productLine === 'RS PME' || order.productLine === 'PME Manual'
+        );
+    }
+    return orders;
+}
+
+function getDefaultProductLine() {
+    if (currentFilter === 'Vista') {
+        return 'RS Vista';
+    } else if (currentFilter === 'PME') {
+        return 'RS PME';   // or 'PME Manual' — you can choose
+    }
+    return 'RS Vista';
+}
 
     // ---------- render ----------
     function renderAll() {
