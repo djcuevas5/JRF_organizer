@@ -125,7 +125,7 @@
                             </div>
                         </div>
 
-                        <!-- ROW 4: TWO-COLUMN - Checkboxes (left) + Committed Date (right) -->
+                        <!-- ROW 4: TWO-COLUMN - Checkboxes (left) + Dates (right) -->
                         <div class="row two-col">
                             <!-- LEFT: Checkboxes -->
                             <div class="field-group checkbox-wrap">
@@ -136,12 +136,16 @@
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
                                     <label><input type="checkbox" class="artwork" ${order.artworkApproved ? 'checked' : ''} /> Artwork Approved</label>
+                                    <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in eVault / sp_hold</label>
                                 </div>
                             </div>
-                            
-                            <!-- RIGHT: Committed Date -->
+
+                            <!-- RIGHT: Dates (Checked Date + Committed Date) -->
                             <div class="field-group date-wrap">
-                                <label>Committed Date</label>
+                                <label>Checked Date</label>
+                                <input type="date" class="checked-date" value="${escapeHtml(order.checkedDate || '')}" />
+                                
+                                <label style="margin-top: 0.8rem;">Committed Date</label>
                                 <input type="date" class="committed-date" value="${escapeHtml(order.committedDate || '')}" />
                             </div>
                         </div>
@@ -242,9 +246,12 @@
         order.rfaMissing = card.querySelector('.rfa')?.checked || false;
         order.keyInterlocks = card.querySelector('.interlocks')?.checked || false;
         order.qaChecklist = card.querySelector('.qa')?.checked || false;
+        order.artworkApproved = card.querySelector('.artwork')?.checked || false;
+        order.drawingsChecked = card.querySelector('.drawings')?.checked || false;
         order.missingText = card.querySelector('.missing-text')?.value || '';
         order.inProcessText = card.querySelector('.in-process-text')?.value || '';
-        order.committedDate = card.querySelector('.committed-date')?.value || '';  // <-- ADD THIS
+        order.checkedDate = card.querySelector('.checked-date')?.value || '';
+        order.committedDate = card.querySelector('.committed-date')?.value || '';
     }
 
     // ---------- update card status ----------
@@ -284,9 +291,12 @@
             rfaMissing: false,
             keyInterlocks: false,
             qaChecklist: false,
+            artworkApproved: false,
+            drawingsChecked: false,
             missingText: '',
             inProcessText: '',
-            committedDate: ''    // <-- ADD THIS
+            checkedDate: '',
+            committedDate: ''
         };
         orders.push(newOrder);
         saveOrders();
