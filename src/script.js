@@ -1,12 +1,9 @@
 (function() {
     'use strict';
-
-    // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
     let currentFilter = 'all';
 
-    // ---------- PERSISTENCE ----------
     function loadOrders() {
         const saved = localStorage.getItem('printHoldOrders');
         if (saved) {
