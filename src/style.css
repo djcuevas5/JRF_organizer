@@ -229,11 +229,11 @@ body {
 /* ----- checkbox group - FIXED ALIGNMENT ----- */
 .checkbox-group {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem 1.8rem;
+    flex-direction: column;     /* Stack vertically */
+    align-items: flex-start;    /* Align to the left */
+    gap: 0.5rem;               /* Space between each checkbox */
     background: rgba(248, 250, 252, 0.8);
-    padding: 0.5rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     border-radius: 60px;
     border: 1px solid rgba(237, 242, 248, 0.8);
     flex: 1 1 100%;
