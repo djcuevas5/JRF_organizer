@@ -469,25 +469,33 @@ body {
     margin-top: 0.25rem;
 }
 
-/* ⚠️ REMOVE BUTTON — FIXED: subtle text link, NOT a big red block */
+/* ----- REMOVE BUTTON — same size as Complete, red, below it ----- */
 .remove-btn {
-    background: transparent;
+    background: #ef4444;
     border: none;
-    color: #94a3b8;
-    font-size: 0.85rem;
+    padding: 0.45rem 1.6rem;
+    border-radius: 60px;
+    font-weight: 600;
+    color: white;
+    font-size: 0.9rem;
     cursor: pointer;
-    padding: 0.3rem 0.8rem;
-    border-radius: 30px;
-    transition: 0.15s;
-    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+    white-space: nowrap;
+    margin-top: 0.2rem;
+    text-align: center;
+    line-height: 1;
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    justify-content: center;
+    height: 38px;
+    gap: 0.4rem;
 }
 
 .remove-btn:hover {
-    background: #fee9e7;
-    color: #b91c1c;
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
 }
 
 /* ----- empty state ----- */
