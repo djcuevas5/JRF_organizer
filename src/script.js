@@ -233,6 +233,7 @@
         order.qaChecklist = card.querySelector('.qa')?.checked || false;
         order.missingText = card.querySelector('.missing-text')?.value || '';
         order.inProcessText = card.querySelector('.in-process-text')?.value || '';
+        order.committedDate = card.querySelector('.committed-date')?.value || '';
     }
 
     // ---------- update just the card status (no full re-render) ----------
