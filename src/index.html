@@ -11,11 +11,17 @@
         <header class="app-header">
             <div class="header-left">
                 <h1 class="main-title">Custom Engineering</h1>
-                <p class="sub-title"> 📦 Print Room · Hold Queue</p>
+                <p class="sub-title">📦 Print Room · Hold Queue</p>
             </div>
-
             <button class="btn btn-primary" id="addOrderBtn">Add Order</button>
         </header>
+
+        <!-- FILTER BUTTONS -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="RS Vista">RS Vista</button>
+            <button class="filter-btn" data-filter="RS PME">PME</button>
+        </div>
 
         <div id="cardContainer" class="card-container">
             <!-- Cards will be rendered here by JavaScript -->
