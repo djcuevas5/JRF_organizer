@@ -4,7 +4,7 @@
     // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
-    let currentFilter = 'all';  // <-- NEW: track current filter
+    let currentFilter = 'all';  // tracks current filter
 
     // ---------- PERSISTENCE ----------
     function loadOrders() {
@@ -52,7 +52,31 @@
         if (currentFilter === 'all') {
             return orders;
         }
-        return orders.filter(order => order.productLine === currentFilter);
+        
+        if (currentFilter === 'Vistas') {
+            // Show ALL orders that contain "Vista" in the product line
+            return orders.filter(order => 
+                order.productLine && order.productLine.toLowerCase().includes('vista')
+            );
+        }
+        
+        if (currentFilter === 'Vista Manual') {
+            // EXACT match only — NO RS Vista, NO ST Vista
+            return orders.filter(order => order.productLine === 'Vista Manual');
+        }
+        
+        if (currentFilter === 'ST Vista') {
+            // EXACT match only — NO RS Vista, NO Vista Manual
+            return orders.filter(order => order.productLine === 'ST Vista');
+        }
+        
+        if (currentFilter === 'PME') {
+            // Show only "RS PME"
+            return orders.filter(order => order.productLine === 'RS PME');
+        }
+        
+        // Default fallback
+        return orders;
     }
 
     // ---------- render ----------
@@ -64,8 +88,8 @@
         if (filteredOrders.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    📭 No orders in the hold queue.<br />
-                    Click <strong>"Add Order"</strong> to get started.
+                    📭 No orders match the current filter.<br />
+                    Click <strong>"All"</strong> to see all orders.
                 </div>
             `;
             return;
@@ -308,6 +332,17 @@
         };
         orders.push(newOrder);
         saveOrders();
+        
+        // 🔥 FIX: Reset filter to "All" so the new order is visible
+        currentFilter = 'all';
+        // Update active button state
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === 'all') {
+                btn.classList.add('active');
+            }
+        });
+        
         renderAll();
         setTimeout(() => {
             const cards = container.querySelectorAll('.card');
@@ -351,6 +386,6 @@
         orders = [];
     }
     renderAll();
-    setupFilters();  // <-- NEW: setup filter buttons
+    setupFilters();
 
 })();
