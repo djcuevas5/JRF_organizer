@@ -136,6 +136,7 @@
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
                                     <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in sp_hold</label>
+                                    <label><input type="checkbox" class="email-sent" ${order.emailSent ? 'checked' : ''} /> Email Sent (if applicable)</label>
                                 </div>
                             </div>
 
