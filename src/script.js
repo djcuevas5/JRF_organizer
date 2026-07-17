@@ -182,7 +182,7 @@
                             </div>
                         </div>
 
-                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete, Remove) -->
+                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
@@ -194,13 +194,12 @@
                             </div>
                             <div class="field-group complete-group">
                                 <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
-                                <button class="remove-btn" data-id="${order.id}">🗑️ Remove</button>
                             </div>
                         </div>
 
-                        <!-- CARD ACTIONS (Delete) -->
+                        <!-- CARD ACTIONS (Delete / Remove) -->
                         <div class="card-actions">
-                            <button class="delete-card-btn" data-id="${order.id}" title="Remove order">🗑️</button>
+                            <button class="remove-btn" data-id="${order.id}" title="Remove order">🗑️ Remove</button>
                         </div>
                     </div>
                 </div>
@@ -314,7 +313,6 @@
 
     // ---------- CRUD ----------
     function addOrder() {
-        // 🔥 FIX: Set product line based on current filter
         const defaultProductLine = getDefaultProductLine();
         
         const newOrder = {
@@ -325,7 +323,7 @@
             jobId: '',
             catNum: '',
             type: 'Change/Approval',
-            productLine: defaultProductLine,  // auto-set to match filter
+            productLine: defaultProductLine,
             designerComment: '',
             lpnNum: '',
             evault: false,
