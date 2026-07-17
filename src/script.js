@@ -118,14 +118,25 @@
                                 <label>LPN #</label>
                                 <input type="text" class="lpn-num" value="${escapeHtml(order.lpnNum || '')}" placeholder="e.g. LPN-1234" />
                             </div>
-                            <div class="field-group checkbox-group">
-                                <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
-                                <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
-                                <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
-                                <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
+                           
+                            <div class="row two-col">
+                            <!-- LEFT WRAP: Checkboxes (vertical) -->
+                            <div class="field-group checkbox-wrap">
+                                <label>Checklist</label>
+                                <div class="checkbox-group-vertical">
+                                    <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
+                                    <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
+                                    <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
+                                    <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
+                                </div>
                             </div>
+                        
+                        <!--RIGHT WRAP:: Committed date -->
+                        <div class="field-group date-wrap">
+                            <label>Committed Date</label>
+                            <input type="date" class="committed-date" value="${order.committedDate || ''}" />
                         </div>
-
+                        
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
