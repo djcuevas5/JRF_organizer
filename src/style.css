@@ -22,7 +22,44 @@
     margin: 0;
     letter-spacing: 0.02em;
 }
+/* ----- FILTER BAR ----- */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
+    padding: 0.5rem 0;
+}
 
+.filter-btn {
+    padding: 0.4rem 1.4rem;
+    border-radius: 60px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.filter-btn.active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.filter-btn.active:hover {
+    background: #1a4fc4;
+}
 /* ----- reset & base ----- */
 * {
     margin: 0;
