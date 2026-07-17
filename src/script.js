@@ -1,6 +1,7 @@
 (function() {
     'use strict';
 
+    // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
     let currentFilter = 'all';
@@ -24,9 +25,10 @@
         localStorage.setItem('printHoldOrders', JSON.stringify(orders));
     }
 
+    // DOM refs
     const container = document.getElementById('cardContainer');
     const addBtn = document.getElementById('addOrderBtn');
-    const floatingAddBtn = document.getElementById('floatingAddBtn');
+    const bottomAddBtn = document.getElementById('bottomAddBtn');  // <-- NEW
 
     // ---------- helpers ----------
     function escapeHtml(text) {
@@ -47,19 +49,29 @@
 
     // ---------- FILTER LOGIC ----------
     function getFilteredOrders() {
-        if (currentFilter === 'all') return orders;
+        if (currentFilter === 'all') {
+            return orders;
+        }
         if (currentFilter === 'Vista') {
-            return orders.filter(o => o.productLine && o.productLine.toLowerCase().includes('vista'));
+            return orders.filter(order =>
+                order.productLine && order.productLine.toLowerCase().includes('vista')
+            );
         }
         if (currentFilter === 'PME') {
-            return orders.filter(o => o.productLine === 'RS PME');
+            return orders.filter(order => order.productLine === 'RS PME');
+            return orders.filter(order =>
+                order.productLine === 'PME Manual' || order.productLine === 'ST PME'
+            )
         }
         return orders;
     }
 
     function getDefaultProductLine() {
-        if (currentFilter === 'Vista') return 'RS Vista';
-        if (currentFilter === 'PME') return 'RS PME';
+        if (currentFilter === 'Vista') {
+            return 'RS Vista';
+        } else if (currentFilter === 'PME') {
+            return 'RS PME';
+        }
         return 'RS Vista';
     }
 
@@ -123,6 +135,8 @@
                                     <option value="RS Vista" ${order.productLine === 'RS Vista' ? 'selected' : ''}>RS Vista</option>
                                     <option value="Vista Manual" ${order.productLine === 'Vista Manual' ? 'selected' : ''}>Vista Manual</option>
                                     <option value="ST Vista" ${order.productLine === 'ST Vista' ? 'selected' : ''}>ST Vista</option>
+                                    <option value="PME Manual" ${order.productLine === 'PME Manual' ? 'selected' : ''}>PME Manual</option>
+                                    <option value="ST PME" ${order.productLine === 'ST PME' ? 'selected' : ''}>ST PME</option>
                                     <option value="RS PME" ${order.productLine === 'RS PME' ? 'selected' : ''}>RS PME</option>
                                 </select>
                             </div>
@@ -136,7 +150,7 @@
                             </div>
                         </div>
 
-                        <!-- ROW 3: LPN # -->
+                        <!-- ROW 3: LPN # (single field) -->
                         <div class="row">
                             <div class="field-group">
                                 <label>LPN #</label>
@@ -146,6 +160,7 @@
 
                         <!-- ROW 4: TWO-COLUMN - Checkboxes (left) + Dates (right) -->
                         <div class="row two-col">
+                            <!-- LEFT: Checkboxes -->
                             <div class="field-group checkbox-wrap">
                                 <div class="checkbox-label">Checklist</div>
                                 <div class="checkbox-group-vertical">
@@ -153,10 +168,12 @@
                                     <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
-                                    <label><input type="checkbox" class="email" ${order.emailsent ? 'checked' : ''} /> Email Sent (if drawings is missing or needed revision) </label>
+                                    <label><input type="checkbox" class="artwork" ${order.artworkApproved ? 'checked' : ''} /> Artwork Approved</label>
                                     <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in sp_hold</label>
                                 </div>
                             </div>
+
+                            <!-- RIGHT: Dates (Checked Date + Committed Date) -->
                             <div class="field-group date-wrap">
                                 <label>Checked Date</label>
                                 <input type="date" class="checked-date" value="${escapeHtml(order.checkedDate || '')}" />
@@ -180,7 +197,6 @@
                                 <button class="remove-btn" data-id="${order.id}">🗑️ Remove</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             `;
@@ -194,12 +210,11 @@
             attachCardEvents(card, index);
         });
 
-        // Attach remove button events (they are inside .complete-group)
+        // Attach remove button events (they are inside complete-group now)
         document.querySelectorAll('.remove-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+            btn.addEventListener('click', function() {
                 const id = parseInt(this.dataset.id);
                 deleteOrder(id);
-                e.stopPropagation(); // prevent bubbling
             });
         });
     }
@@ -287,6 +302,7 @@
     // ---------- CRUD ----------
     function addOrder() {
         const defaultProductLine = getDefaultProductLine();
+
         const newOrder = {
             id: nextId++,
             productLineName: '',
@@ -350,22 +366,31 @@
 
         if (!guideBtn || !guideModal || !closeBtn) return;
 
-        function openGuide() { guideModal.classList.add('active'); }
-        function closeGuide() { guideModal.classList.remove('active'); }
+        function openGuide() {
+            guideModal.classList.add('active');
+        }
+
+        function closeGuide() {
+            guideModal.classList.remove('active');
+        }
 
         guideBtn.addEventListener('click', openGuide);
         closeBtn.addEventListener('click', closeGuide);
+
         guideModal.addEventListener('click', function(e) {
             if (e.target === guideModal) closeGuide();
         });
+
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && guideModal.classList.contains('active')) closeGuide();
+            if (e.key === 'Escape' && guideModal.classList.contains('active')) {
+                closeGuide();
+            }
         });
     }
 
     // ---------- event listeners ----------
     addBtn.addEventListener('click', addOrder);
-    floatingAddBtn.addEventListener('click', addOrder);
+    bottomAddBtn.addEventListener('click', addOrder);   // <-- CONNECTED
 
     // ---------- INIT ----------
     if (!loadOrders()) {
@@ -374,4 +399,5 @@
     renderAll();
     setupFilters();
     setupGuide();
+
 })();
