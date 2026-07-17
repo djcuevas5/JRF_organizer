@@ -136,7 +136,7 @@
                             <label>Committed Date</label>
                             <input type="date" class="committed-date" value="${order.committedDate || ''}" />
                         </div>
-                        
+
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
@@ -273,7 +273,8 @@
             keyInterlocks: false,
             qaChecklist: false,
             missingText: '',
-            inProcessText: ''
+            inProcessText: '',
+            committedDate: ''
         };
         orders.push(newOrder);
         saveOrders();          // <-- SAVE
