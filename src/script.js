@@ -1,7 +1,6 @@
 (function() {
     'use strict';
 
-    // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
     let currentFilter = 'all';
@@ -25,7 +24,6 @@
         localStorage.setItem('printHoldOrders', JSON.stringify(orders));
     }
 
-    // DOM refs
     const container = document.getElementById('cardContainer');
     const addBtn = document.getElementById('addOrderBtn');
     const floatingAddBtn = document.getElementById('floatingAddBtn');
@@ -49,30 +47,19 @@
 
     // ---------- FILTER LOGIC ----------
     function getFilteredOrders() {
-        if (currentFilter === 'all') {
-            return orders;
-        }
-        
+        if (currentFilter === 'all') return orders;
         if (currentFilter === 'Vista') {
-            return orders.filter(order => 
-                order.productLine && order.productLine.toLowerCase().includes('vista')
-            );
+            return orders.filter(o => o.productLine && o.productLine.toLowerCase().includes('vista'));
         }
-        
         if (currentFilter === 'PME') {
-            return orders.filter(order => order.productLine === 'RS PME');
+            return orders.filter(o => o.productLine === 'RS PME');
         }
-        
         return orders;
     }
 
-    // ---------- get default product line based on filter ----------
     function getDefaultProductLine() {
-        if (currentFilter === 'Vista') {
-            return 'RS Vista';
-        } else if (currentFilter === 'PME') {
-            return 'RS PME';
-        }
+        if (currentFilter === 'Vista') return 'RS Vista';
+        if (currentFilter === 'PME') return 'RS PME';
         return 'RS Vista';
     }
 
@@ -149,7 +136,7 @@
                             </div>
                         </div>
 
-                        <!-- ROW 3: LPN # (single field) -->
+                        <!-- ROW 3: LPN # -->
                         <div class="row">
                             <div class="field-group">
                                 <label>LPN #</label>
@@ -159,7 +146,6 @@
 
                         <!-- ROW 4: TWO-COLUMN - Checkboxes (left) + Dates (right) -->
                         <div class="row two-col">
-                            <!-- LEFT: Checkboxes -->
                             <div class="field-group checkbox-wrap">
                                 <div class="checkbox-label">Checklist</div>
                                 <div class="checkbox-group-vertical">
@@ -171,33 +157,32 @@
                                     <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in sp_hold</label>
                                 </div>
                             </div>
-
-                            <!-- RIGHT: Dates (Checked Date + Committed Date) -->
                             <div class="field-group date-wrap">
                                 <label>Checked Date</label>
                                 <input type="date" class="checked-date" value="${escapeHtml(order.checkedDate || '')}" />
-                                
                                 <label style="margin-top: 0.8rem;">Committed Date</label>
                                 <input type="date" class="committed-date" value="${escapeHtml(order.committedDate || '')}" />
                             </div>
                         </div>
-                        
-                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
+
+                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete + Remove) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
-                                <input type="text" class="missing-text" ... />
+                                <input type="text" class="missing-text" value="${escapeHtml(order.missingText || '')}" placeholder="e.g. missing artwork" />
                             </div>
                             <div class="field-group">
                                 <label>In Process</label>
-                                <input type="text" class="in-process-text" ... />
+                                <input type="text" class="in-process-text" value="${escapeHtml(order.inProcessText || '')}" placeholder="e.g. waiting for approval" />
+                            </div>
+                            <div class="field-group complete-group">
+                                <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
+                                <button class="remove-btn" data-id="${order.id}">🗑️ Remove</button>
                             </div>
                         </div>
-                            <div class="field-group complete-group">
-                            <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
-                            <button class="remove-btn" ${isCompleteEnabled ? '' : 'disabled'}>🗑️ Remove</button>
-                        </div>
+
                     </div>
+                </div>
             `;
         });
 
@@ -209,11 +194,12 @@
             attachCardEvents(card, index);
         });
 
-        // Attach remove button events
+        // Attach remove button events (they are inside .complete-group)
         document.querySelectorAll('.remove-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function(e) {
                 const id = parseInt(this.dataset.id);
                 deleteOrder(id);
+                e.stopPropagation(); // prevent bubbling
             });
         });
     }
@@ -233,14 +219,6 @@
                 saveOrders();
             });
         });
-
-        const deleteBtn = card.querySelector('.delete-card-btn');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', function() {
-                const id = parseInt(this.dataset.id);
-                deleteOrder(id);
-            });
-        }
 
         const completeBtn = card.querySelector('.complete-btn');
         if (completeBtn) {
@@ -309,7 +287,6 @@
     // ---------- CRUD ----------
     function addOrder() {
         const defaultProductLine = getDefaultProductLine();
-        
         const newOrder = {
             id: nextId++,
             productLineName: '',
@@ -373,25 +350,16 @@
 
         if (!guideBtn || !guideModal || !closeBtn) return;
 
-        function openGuide() {
-            guideModal.classList.add('active');
-        }
-
-        function closeGuide() {
-            guideModal.classList.remove('active');
-        }
+        function openGuide() { guideModal.classList.add('active'); }
+        function closeGuide() { guideModal.classList.remove('active'); }
 
         guideBtn.addEventListener('click', openGuide);
         closeBtn.addEventListener('click', closeGuide);
-
         guideModal.addEventListener('click', function(e) {
             if (e.target === guideModal) closeGuide();
         });
-
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && guideModal.classList.contains('active')) {
-                closeGuide();
-            }
+            if (e.key === 'Escape' && guideModal.classList.contains('active')) closeGuide();
         });
     }
 
@@ -406,5 +374,4 @@
     renderAll();
     setupFilters();
     setupGuide();
-
 })();
