@@ -135,9 +135,10 @@
                                     <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
+                                    <label><input type="checkbox" class="artwork" ${order.artworkApproved ? 'checked' : ''} /> Artwork Approved</label>
                                 </div>
                             </div>
-
+                            
                             <!-- RIGHT: Committed Date -->
                             <div class="field-group date-wrap">
                                 <label>Committed Date</label>
