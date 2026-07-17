@@ -73,7 +73,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.8rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 /* ----- individual card ----- */
