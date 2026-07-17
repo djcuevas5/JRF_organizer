@@ -4,7 +4,7 @@
     // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
-    let currentFilter = 'all';  // tracks current filter
+    let currentFilter = 'all';
 
     // ---------- PERSISTENCE ----------
     function loadOrders() {
@@ -54,19 +54,26 @@
         }
         
         if (currentFilter === 'Vista') {
-            // Show ALL orders that contain "Vista" in the product line
             return orders.filter(order => 
                 order.productLine && order.productLine.toLowerCase().includes('vista')
             );
         }
         
         if (currentFilter === 'PME') {
-            // Show ONLY "RS PME" — exact match
             return orders.filter(order => order.productLine === 'RS PME');
         }
         
-        // Default fallback
         return orders;
+    }
+
+    // ---------- get default product line based on filter ----------
+    function getDefaultProductLine() {
+        if (currentFilter === 'Vista') {
+            return 'RS Vista';
+        } else if (currentFilter === 'PME') {
+            return 'RS PME';
+        }
+        return 'RS Vista';
     }
 
     // ---------- render ----------
@@ -79,7 +86,7 @@
             container.innerHTML = `
                 <div class="empty-state">
                     📭 No orders match the current filter.<br />
-                    Click <strong>"All"</strong> to see all orders.
+                    Click <strong>"Add Order"</strong> to get started.
                 </div>
             `;
             return;
@@ -175,7 +182,7 @@
                             </div>
                         </div>
 
-                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
+                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete, Remove) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
@@ -187,6 +194,7 @@
                             </div>
                             <div class="field-group complete-group">
                                 <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
+                                <button class="remove-btn" data-id="${order.id}">🗑️ Remove</button>
                             </div>
                         </div>
 
@@ -205,6 +213,14 @@
         container.querySelectorAll('.card').forEach(card => {
             const index = parseInt(card.dataset.index);
             attachCardEvents(card, index);
+        });
+
+        // Attach remove button events
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.dataset.id);
+                deleteOrder(id);
+            });
         });
     }
 
@@ -298,6 +314,9 @@
 
     // ---------- CRUD ----------
     function addOrder() {
+        // 🔥 FIX: Set product line based on current filter
+        const defaultProductLine = getDefaultProductLine();
+        
         const newOrder = {
             id: nextId++,
             productLineName: '',
@@ -306,7 +325,7 @@
             jobId: '',
             catNum: '',
             type: 'Change/Approval',
-            productLine: 'RS Vista',
+            productLine: defaultProductLine,  // auto-set to match filter
             designerComment: '',
             lpnNum: '',
             evault: false,
@@ -345,14 +364,41 @@
         const filterButtons = document.querySelectorAll('.filter-btn');
         filterButtons.forEach(btn => {
             btn.addEventListener('click', function() {
-                // Update active class
                 filterButtons.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-
-                // Set filter and re-render
                 currentFilter = this.dataset.filter;
                 renderAll();
             });
+        });
+    }
+
+    // ---------- GUIDE MODAL ----------
+    function setupGuide() {
+        const guideBtn = document.getElementById('guideBtn');
+        const guideModal = document.getElementById('guideModal');
+        const closeBtn = document.getElementById('closeGuideBtn');
+
+        if (!guideBtn || !guideModal || !closeBtn) return;
+
+        function openGuide() {
+            guideModal.classList.add('active');
+        }
+
+        function closeGuide() {
+            guideModal.classList.remove('active');
+        }
+
+        guideBtn.addEventListener('click', openGuide);
+        closeBtn.addEventListener('click', closeGuide);
+
+        guideModal.addEventListener('click', function(e) {
+            if (e.target === guideModal) closeGuide();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && guideModal.classList.contains('active')) {
+                closeGuide();
+            }
         });
     }
 
@@ -366,5 +412,6 @@
     }
     renderAll();
     setupFilters();
+    setupGuide();
 
 })();

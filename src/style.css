@@ -312,6 +312,9 @@ body {
 .complete-group {
     flex: 0 1 auto;
     justify-content: flex-end;
+    display:flex;
+    gap: 0.6rem;
+    align-items: center;
 }
 
 .complete-btn {
@@ -569,5 +572,33 @@ body {
         width: 100%;
         min-width: unset;
     }
+    /* ----- Remove Button ----- */
+.remove-btn {
+    background: #ef4444;
+    border: none;
+    padding: 0.45rem 1.2rem;
+    border-radius: 60px;
+    font-weight: 600;
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+    white-space: nowrap;
+    margin-top: 0.2rem;
+    text-align: center;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    gap: 0.4rem;
+}
+
+.remove-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
+}
     
 }
