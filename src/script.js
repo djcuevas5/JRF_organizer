@@ -134,6 +134,7 @@ function getDefaultProductLine() {
                             <div class="field-group">
                                 <label>Product Line</label>
                                 <select class="product-line-dropdown">
+                                    <option value="" ${order.productLine === '' ? 'selected' : ''}>Select Product Line</option>
                                     <option value="RS Vista" ${order.productLine === 'RS Vista' ? 'selected' : ''}>RS Vista</option>
                                     <option value="Vista Manual" ${order.productLine === 'Vista Manual' ? 'selected' : ''}>Vista Manual</option>
                                     <option value="ST Vista" ${order.productLine === 'ST Vista' ? 'selected' : ''}>ST Vista</option>
