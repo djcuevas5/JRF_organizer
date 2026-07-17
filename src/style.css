@@ -436,6 +436,17 @@ body {
         padding: 0.5rem 0.8rem;
     }
 
+/* ... your existing CSS ... */
+
+@media (max-width: 700px) {
+    /* ... mobile-specific overrides ... */
+    /* KEEP ONLY MOBILE-SPECIFIC RULES HERE */
+}
+
+/* ============================================================
+   MOVED OUTSIDE MEDIA QUERY – applies on all screen sizes
+   ============================================================ */
+
 /* ----- TWO-COLUMN ROW (Checkboxes + Dates) ----- */
 .row.two-col {
     display: flex;
@@ -531,5 +542,10 @@ body {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ----- Floating Action Button ----- */
+.fab {
+    /* ... keep as is ... */
 }
 }
