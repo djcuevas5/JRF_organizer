@@ -436,7 +436,7 @@ body {
         padding: 0.5rem 0.8rem;
     }
 
-/* ----- TWO-COLUMN ROW (Checkboxes + Date) ----- */
+/* ----- TWO-COLUMN ROW (Checkboxes + Dates) ----- */
 .row.two-col {
     display: flex;
     flex-wrap: wrap;
