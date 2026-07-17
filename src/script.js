@@ -4,6 +4,7 @@
     // ---------- EMPTY – no sample data (confidential) ----------
     let orders = [];
     let nextId = 1;
+    let currentFilter = 'all';  // <-- NEW: track current filter
 
     // ---------- PERSISTENCE ----------
     function loadOrders() {
@@ -46,11 +47,21 @@
         }
     }
 
+    // ---------- FILTER LOGIC ----------
+    function getFilteredOrders() {
+        if (currentFilter === 'all') {
+            return orders;
+        }
+        return orders.filter(order => order.productLine === currentFilter);
+    }
+
     // ---------- render ----------
     function renderAll() {
         if (!container) return;
 
-        if (orders.length === 0) {
+        const filteredOrders = getFilteredOrders();
+
+        if (filteredOrders.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     📭 No orders in the hold queue.<br />
@@ -61,7 +72,7 @@
         }
 
         let html = '';
-        orders.forEach((order, index) => {
+        filteredOrders.forEach((order, index) => {
             const status = getCardStatus(order);
             const isCompleteEnabled = status === 'green';
 
@@ -131,12 +142,12 @@
                             <div class="field-group checkbox-wrap">
                                 <div class="checkbox-label">Checklist</div>
                                 <div class="checkbox-group-vertical">
-                                    <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> Drawings in eVault</label>
+                                    <label><input type="checkbox" class="evault" ${order.evault ? 'checked' : ''} /> eVault</label>
                                     <label><input type="checkbox" class="rfa" ${order.rfaMissing ? 'checked' : ''} /> RFA Missing</label>
                                     <label><input type="checkbox" class="interlocks" ${order.keyInterlocks ? 'checked' : ''} /> Key Interlocks</label>
                                     <label><input type="checkbox" class="qa" ${order.qaChecklist ? 'checked' : ''} /> QA Checklist</label>
+                                    <label><input type="checkbox" class="artwork" ${order.artworkApproved ? 'checked' : ''} /> Artwork Approved</label>
                                     <label><input type="checkbox" class="drawings" ${order.drawingsChecked ? 'checked' : ''} /> Drawings in sp_hold</label>
-                                    <label><input type="checkbox" class="email-sent" ${order.emailSent ? 'checked' : ''} /> Email Sent (if applicable)</label>
                                 </div>
                             </div>
 
@@ -185,7 +196,6 @@
 
     // ---------- attach events to a single card ----------
     function attachCardEvents(card, index) {
-        // Get all inputs and selects
         const inputs = card.querySelectorAll('input, select');
         inputs.forEach(input => {
             input.addEventListener('input', function() {
@@ -200,7 +210,6 @@
             });
         });
 
-        // Delete button
         const deleteBtn = card.querySelector('.delete-card-btn');
         if (deleteBtn) {
             deleteBtn.addEventListener('click', function() {
@@ -209,7 +218,6 @@
             });
         }
 
-        // Complete button
         const completeBtn = card.querySelector('.complete-btn');
         if (completeBtn) {
             completeBtn.addEventListener('click', function() {
@@ -318,6 +326,22 @@
         renderAll();
     }
 
+    // ---------- FILTER EVENTS ----------
+    function setupFilters() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active class
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Set filter and re-render
+                currentFilter = this.dataset.filter;
+                renderAll();
+            });
+        });
+    }
+
     // ---------- event listeners ----------
     addBtn.addEventListener('click', addOrder);
     floatingAddBtn.addEventListener('click', addOrder);
@@ -327,5 +351,6 @@
         orders = [];
     }
     renderAll();
+    setupFilters();  // <-- NEW: setup filter buttons
 
 })();
