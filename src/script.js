@@ -181,28 +181,23 @@
                                 <input type="date" class="committed-date" value="${escapeHtml(order.committedDate || '')}" />
                             </div>
                         </div>
-
+                        
                         <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
-                                <input type="text" class="missing-text" value="${escapeHtml(order.missingText || '')}" placeholder="e.g. missing artwork" />
+                                <input type="text" class="missing-text" ... />
                             </div>
                             <div class="field-group">
                                 <label>In Process</label>
-                                <input type="text" class="in-process-text" value="${escapeHtml(order.inProcessText || '')}" placeholder="e.g. waiting for approval" />
-                            </div>
-                            <div class="field-group complete-group">
-                                <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
+                                <input type="text" class="in-process-text" ... />
                             </div>
                         </div>
-
-                        <!-- CARD ACTIONS (Delete / Remove) -->
-                        <div class="card-actions">
-                            <button class="remove-btn" data-id="${order.id}" title="Remove order">🗑️ Remove</button>
+                            <div class="field-group complete-group">
+                            <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
+                            <button class="remove-btn" ${isCompleteEnabled ? '' : 'disabled'}>🗑️ Remove</button>
                         </div>
                     </div>
-                </div>
             `;
         });
 
