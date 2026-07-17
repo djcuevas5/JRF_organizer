@@ -474,10 +474,11 @@ body {
 }
 
 /* ----- REMOVE BUTTON — WIDER but SHORTER than Complete, RED, below it ----- */
+/* ----- REMOVE BUTTON — SHORTER & WIDER than Complete, RED, below it ----- */
 .remove-btn {
     background: #ef4444;
     border: none;
-    padding: 0.25rem 2.5rem;
+    padding: 0.2rem 2.8rem;
     border-radius: 60px;
     font-weight: 500;
     color: white;
@@ -492,7 +493,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
+    height: 28px;
     gap: 0.3rem;
 }
 
