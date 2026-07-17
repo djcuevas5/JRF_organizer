@@ -122,6 +122,8 @@ function getDefaultProductLine() {
                             <div class="field-group">
                                 <label>Type <span class="required">*</span></label>
                                 <select class="type-dropdown" required>
+                                    <option value="" ${order.type === '' ? 'selected' : ''}>Select Type</option>
+                                    <option value="Change/Production" ${order.type === 'Change/Production' ? 'selected' : ''}>Change/Production</option>
                                     <option value="Change/Approval" ${order.type === 'Change/Approval' ? 'selected' : ''}>Change/Approval</option>
                                     <option value="Change/Keep_p" ${order.type === 'Change/Keep_p' ? 'selected' : ''}>Change/Keep_p</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
