@@ -71,7 +71,7 @@
         }
         
         if (currentFilter === 'PME') {
-            // Show only "RS PME"
+            // EXACT match only — ONLY RS PME
             return orders.filter(order => order.productLine === 'RS PME');
         }
         
@@ -333,15 +333,8 @@
         orders.push(newOrder);
         saveOrders();
         
-        // 🔥 FIX: Reset filter to "All" so the new order is visible
-        currentFilter = 'all';
-        // Update active button state
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.filter === 'all') {
-                btn.classList.add('active');
-            }
-        });
+        // 🔥 FIX: Keep current filter — DO NOT reset to "All"
+        // The new order will show if it matches the current filter
         
         renderAll();
         setTimeout(() => {
