@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sales Order / Print Room Que</title>
-    <link rel="stylesheet" href="style.css" /> 
+    <title>Custom Engineering · Print Hold</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <div class="app">
@@ -13,23 +13,47 @@
                 <h1 class="main-title">Custom Engineering</h1>
                 <div class="header-row">
                     <p class="sub-title">📦 Print Room · Hold Queue</p>
-                   <!-- FILTER BUTTONS -->
                     <div class="filter-bar">
                         <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="Vista">VISTAS</button>
+                        <button class="filter-btn" data-filter="Vista">VISTA</button>
                         <button class="filter-btn" data-filter="PME">PME</button>
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" id="addOrderBtn">Add Order</button>
+            <div class="header-right">
+                <button class="btn btn-guide" id="guideBtn">📖 Guide</button>
+                <button class="btn btn-primary" id="addOrderBtn">Add Order</button>
+            </div>
         </header>
 
         <div id="cardContainer" class="card-container">
-            <!-- Cards will be rendered here by JavaScript -->
+            <!-- Cards rendered by JavaScript -->
         </div>
 
-        <!-- Floating Action Button -->
-        <button class="fab" id="floatingAddBtn" aria-label="Add new order">＋</button>
+        <!-- Bottom Add Order button – full width, card‑style -->
+        <div class="add-order-wrapper">
+            <button class="btn-add-order" id="bottomAddBtn">＋ Add Order</button>
+        </div>
+    </div>
+
+    <!-- Guide Modal -->
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal guide-modal">
+            <h2>📋 How to Process an Order</h2>
+            <div class="guide-content">
+                <ol>
+                    <li><strong>Review the Sales Order</strong> – Check that all required fields (Job ID, Cat #, Type) are filled.</li>
+                    <li><strong>Verify the Checklist</strong> – Ensure eVault, RFA Missing, Key Interlocks, QA Checklist, Artwork Approved, and Drawings in sp_hold are correctly marked.</li>
+                    <li><strong>Check Dates</strong> – Confirm the Checked Date and Committed Date are set.</li>
+                    <li><strong>Fill Missing / In Process</strong> – If something is missing or in progress, add details in the respective text fields.</li>
+                    <li><strong>Complete the Order</strong> – Once everything is ready and the card turns <span style="color:green;">green</span>, click the <strong>Complete</strong> button to remove it from the hold queue.</li>
+                </ol>
+                <p><em>Tip: Use the filters (VISTA / PME) to focus on specific product lines.</em></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="closeGuideBtn">Got it</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
