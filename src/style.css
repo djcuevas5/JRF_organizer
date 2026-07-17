@@ -201,12 +201,12 @@ body {
 
 .field-group input,
 .field-group select {
-    padding: 0.4rem 0.8rem;
+    height: 48px;
+    padding: 0 1em;
     border: 1px solid #dce3ef;
     border-radius: 30px;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     background: white;
-    transition: 0.15s;
     font-family: inherit;
     width: 100%;
 }
