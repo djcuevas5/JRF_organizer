@@ -526,9 +526,9 @@ body {
     width: 100%;
     padding: 1.2rem;
     border-radius: 28px;
-    border: 2px dashed rgba(255, 255, 255, 0.25);
+    border: 2px dashed rgba(30, 17, 126, 0.25);
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(99, 95, 226, 0.5);
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
