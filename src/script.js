@@ -269,7 +269,7 @@ function getDefaultProductLine() {
         order.lpnNum = card.querySelector('.lpn-num')?.value || '';
         order.evault = card.querySelector('.evault')?.checked || false;
         order.rfaMissing = card.querySelector('.rfa')?.checked || false;
-        order.keyInterlocks = card.querySelector('.interlocks')?.checked || false;
+        order.keyInterlocksS = card.querySelector('.interlocks')?.checked || false;
         order.qaChecklist = card.querySelector('.qa')?.checked || false;
         order.artworkApproved = card.querySelector('.artwork')?.checked || false;
         order.drawingsChecked = card.querySelector('.drawings')?.checked || false;
