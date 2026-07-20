@@ -412,7 +412,7 @@ body {
     border-radius: 60px;
     margin-top: 0.25rem;
     border: 1px solid rgba(237, 242, 248, 0.8);
-    align-items: flex-end;
+    align-items: center;
 }
 
 .status-row .field-group {
@@ -425,8 +425,13 @@ body {
     flex: 1;
 }
 
+/* ----- COMPLETE & REMOVE buttons (side‑by‑side) ----- */
 .complete-group {
     flex: 0 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
     justify-content: flex-end;
 }
 
@@ -442,7 +447,6 @@ body {
     transition: all 0.2s;
     box-shadow: 0 4px 10px rgba(34, 197, 94, 0.25);
     white-space: nowrap;
-    margin-top: 0.2rem;
     text-align: center;
     line-height: 1;
     display: inline-flex;
@@ -462,32 +466,36 @@ body {
     background: #94a3b8;
 }
 
-/* ----- card actions (remove button) ----- */
-.card-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.25rem;
-}
-
-/* ⚠️ REMOVE BUTTON — FIXED: subtle text link, NOT a big red block */
 .remove-btn {
-    background: transparent;
+    background: #ef4444;
     border: none;
-    color: #94a3b8;
-    font-size: 0.85rem;
+    padding: 0.45rem 1.6rem;
+    border-radius: 60px;
+    font-weight: 600;
+    color: white;
+    font-size: 0.9rem;
     cursor: pointer;
-    padding: 0.3rem 0.8rem;
-    border-radius: 30px;
-    transition: 0.15s;
-    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.25);
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1;
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    justify-content: center;
+    height: 38px;
+    gap: 0.4rem;
 }
 
 .remove-btn:hover {
-    background: #fee9e7;
-    color: #b91c1c;
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(239, 68, 68, 0.35);
+}
+
+/* ----- card actions (remove button) — now unused, kept for compatibility ----- */
+.card-actions {
+    display: none;
 }
 
 /* ----- empty state ----- */
@@ -508,32 +516,37 @@ body {
     color: #ffffff;
 }
 
-/* ----- Floating Action Button ----- */
-.fab {
-    position: fixed;
-    bottom: 2.5rem;
-    right: 2.5rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #2563eb;
-    color: white;
-    border: none;
-    font-size: 2.6rem;
-    font-weight: 300;
-    box-shadow: 0 8px 28px rgba(37, 99, 235, 0.5);
+/* ----- BOTTOM ADD ORDER BUTTON (full width, like a card) ----- */
+.add-order-wrapper {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.btn-add-order {
+    width: 100%;
+    padding: 1.2rem;
+    border-radius: 28px;
+    border: 2px dashed rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
-    z-index: 999;
+    backdrop-filter: blur(4px);
+    text-align: center;
+    font-family: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.6rem;
 }
 
-.fab:hover {
-    transform: scale(1.08);
-    background: #1a4fc4;
-    box-shadow: 0 12px 36px rgba(37, 99, 235, 0.6);
+.btn-add-order:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
 }
 
 /* ----- MODAL (Guide) ----- */
@@ -640,20 +653,19 @@ body {
         border-radius: 30px;
         gap: 0.8rem;
     }
+
     .complete-group {
         justify-content: stretch;
-    }
-    .complete-btn {
-        width: 100%;
-        text-align: center;
+        flex-direction: row;  /* keep side‑by‑side on mobile too */
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
-    .fab {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 52px;
-        height: 52px;
-        font-size: 2.2rem;
+    .complete-btn,
+    .remove-btn {
+        flex: 1 1 auto;
+        min-width: 100px;
+        justify-content: center;
     }
 
     .row.two-col {
@@ -667,11 +679,8 @@ body {
         min-width: unset;
     }
 
-    /* Mobile overrides for the Guide modal */
     .modal {
         padding: 1.5rem;
         width: 95%;
     }
-
-    /* ⚠️ IMPORTANT: Do NOT override .remove-btn here — keep it global! */
 }

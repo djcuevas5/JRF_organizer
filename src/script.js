@@ -25,7 +25,7 @@
     // DOM refs
     const container = document.getElementById('cardContainer');
     const addBtn = document.getElementById('addOrderBtn');
-    const floatingAddBtn = document.getElementById('floatingAddBtn');
+    const bottomAddBtn = document.getElementById('bottomAddBtn');  // <-- NEW
 
     // ---------- helpers ----------
     function escapeHtml(text) {
@@ -46,32 +46,31 @@
 
     // ---------- FILTER LOGIC ----------
     function getFilteredOrders() {
-        if (currentFilter === 'all') {
-            return orders;
-        }
-        
-        if (currentFilter === 'Vista') {
-            return orders.filter(order => 
-                order.productLine && order.productLine.toLowerCase().includes('vista')
-            );
-        }
-        
-        if (currentFilter === 'PME') {
-            return orders.filter(order => order.productLine === 'RS PME');
-        }
-        
+    if (currentFilter === 'all') {
         return orders;
     }
-
-    // ---------- get default product line based on filter ----------
-    function getDefaultProductLine() {
-        if (currentFilter === 'Vista') {
-            return 'RS Vista';
-        } else if (currentFilter === 'PME') {
-            return 'RS PME';
-        }
-        return 'RS Vista';
+    if (currentFilter === 'Vista') {
+        return orders.filter(order =>
+            order.productLine && order.productLine.toLowerCase().includes('vista')
+        );
     }
+    if (currentFilter === 'PME') {
+        // Show BOTH RS PME and PME Manual
+        return orders.filter(order =>
+            order.productLine === 'RS PME' || order.productLine === 'PME Manual' || order.productLine === 'ST PME'
+        );
+    }
+    return orders;
+}
+
+function getDefaultProductLine() {
+    if (currentFilter === 'Vista') {
+        return 'RS Vista';
+    } else if (currentFilter === 'PME') {
+        return 'RS PME';   // or 'PME Manual' — you can choose
+    }
+    return 'RS Vista';
+}
 
     // ---------- render ----------
     function renderAll() {
@@ -120,6 +119,8 @@
                             <div class="field-group">
                                 <label>Type <span class="required">*</span></label>
                                 <select class="type-dropdown" required>
+                                    <option value="" ${order.type === '' ? 'selected' : ''}>Select Type</option>
+                                    <option value="Change/Production" ${order.type === 'Change/Production' ? 'selected' : ''}>Change/Production</option>
                                     <option value="Change/Approval" ${order.type === 'Change/Approval' ? 'selected' : ''}>Change/Approval</option>
                                     <option value="Change/Keep_p" ${order.type === 'Change/Keep_p' ? 'selected' : ''}>Change/Keep_p</option>
                                     <option value="Revision" ${order.type === 'Revision' ? 'selected' : ''}>Revision</option>
@@ -130,9 +131,12 @@
                             <div class="field-group">
                                 <label>Product Line</label>
                                 <select class="product-line-dropdown">
+                                    <option value="" ${order.productLine === '' ? 'selected' : ''}>Select Product Line</option>
                                     <option value="RS Vista" ${order.productLine === 'RS Vista' ? 'selected' : ''}>RS Vista</option>
                                     <option value="Vista Manual" ${order.productLine === 'Vista Manual' ? 'selected' : ''}>Vista Manual</option>
                                     <option value="ST Vista" ${order.productLine === 'ST Vista' ? 'selected' : ''}>ST Vista</option>
+                                    <option value="PME Manual" ${order.productLine === 'PME Manual' ? 'selected' : ''}>PME Manual</option>
+                                    <option value="ST PME" ${order.productLine === 'ST PME' ? 'selected' : ''}>ST PME</option>
                                     <option value="RS PME" ${order.productLine === 'RS PME' ? 'selected' : ''}>RS PME</option>
                                 </select>
                             </div>
@@ -173,13 +177,12 @@
                             <div class="field-group date-wrap">
                                 <label>Checked Date</label>
                                 <input type="date" class="checked-date" value="${escapeHtml(order.checkedDate || '')}" />
-                                
                                 <label style="margin-top: 0.8rem;">Committed Date</label>
                                 <input type="date" class="committed-date" value="${escapeHtml(order.committedDate || '')}" />
                             </div>
                         </div>
 
-                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete) -->
+                        <!-- ROW 5: Status Row (Missing Text, In Process, Complete + Remove) -->
                         <div class="row status-row">
                             <div class="field-group">
                                 <label>Missing Text</label>
@@ -191,12 +194,8 @@
                             </div>
                             <div class="field-group complete-group">
                                 <button class="complete-btn" ${isCompleteEnabled ? '' : 'disabled'}>✅ Complete</button>
+                                <button class="remove-btn" data-id="${order.id}">🗑️ Remove</button>
                             </div>
-                        </div>
-
-                        <!-- CARD ACTIONS (Delete / Remove) -->
-                        <div class="card-actions">
-                            <button class="remove-btn" data-id="${order.id}" title="Remove order">🗑️ Remove</button>
                         </div>
                     </div>
                 </div>
@@ -211,7 +210,7 @@
             attachCardEvents(card, index);
         });
 
-        // Attach remove button events
+        // Attach remove button events (they are inside complete-group now)
         document.querySelectorAll('.remove-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const id = parseInt(this.dataset.id);
@@ -235,14 +234,6 @@
                 saveOrders();
             });
         });
-
-        const deleteBtn = card.querySelector('.delete-card-btn');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', function() {
-                const id = parseInt(this.dataset.id);
-                deleteOrder(id);
-            });
-        }
 
         const completeBtn = card.querySelector('.complete-btn');
         if (completeBtn) {
@@ -311,7 +302,7 @@
     // ---------- CRUD ----------
     function addOrder() {
         const defaultProductLine = getDefaultProductLine();
-        
+
         const newOrder = {
             id: nextId++,
             productLineName: '',
@@ -399,7 +390,7 @@
 
     // ---------- event listeners ----------
     addBtn.addEventListener('click', addOrder);
-    floatingAddBtn.addEventListener('click', addOrder);
+    bottomAddBtn.addEventListener('click', addOrder);   // <-- CONNECTED
 
     // ---------- INIT ----------
     if (!loadOrders()) {
